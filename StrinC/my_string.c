@@ -35,7 +35,7 @@ string *my_rcharsearch(const string *, const char );
 // gives no of occurencexs of a char
 long long int occ_count(const string *, const char);
 // #TODO Tokenize the string i.e. implement .split() in c
-string* splitter(const string* , char);
+string** splitter(const string* , char);
 string make_string( char * t)
 {
     string a;
@@ -188,26 +188,31 @@ string *slicer(const string* s, int start, int l)
 //Return a pointer to the place where the substring occurs in a string
 string *my_substrsearch(const string *needle, const string *haystack)
 {
-    string *res;
+
     long long int n = haystack->len;
-    for (long long int i = 0; i < n; i++)
+     long long int k = needle->len;
+     if (k == 0)
+     {
+         return slicer((string *)haystack, 0,0);
+     }
+    for (long long int i = 0; i <= n - k; i++)
     {
+        long long int j;
         if (*(haystack->txt + i)  == *(needle->txt))
         {
-            for (long long int j = 0, k = needle->len; j < k;j++)
+            for ( j = 0; j < k;j++)
             {
                 if (*(haystack->txt + i + j)  != *(needle->txt + j))
                 {
                     break;
                 }
 
-                if (j == k-1)
-                {
-                    res->txt = (haystack->txt + i);
-                    res->len = charcount(needle);
-                    return res;
-                }
+                
             }
+            if (j == k)
+                {
+                    return slicer((string *)haystack, i, needle->len);
+                }
         }
     }
     return NULL;
@@ -261,31 +266,28 @@ long long int occ_count(const string *s, const char c)
     return count;
 }
 // #TODO debug
-string* splitter(const string* s, char dlr)
+string** splitter(const string* s, char dlr)
 {
     long long int occ = occ_count(s, dlr);
-    if (occ == 0)
-    {
-        return s;
-    }
+    
     long long int n = s->len;
 
-    string slices[n+1];
+    string* slices[] = (string *)malloc(occ+1);
 
     long long int start = 0, c = 0;
     for(long long int i = 0; i < n+1;i++)
     {
         if (*(s->txt + i) == dlr)
         {
-            // #TODO very bad but works for first prototype
-            slices[c] = *(slicer(s, start,i-start));
+            
+            *(slices[c]) = *(slicer(s, start,i-start));
             i += 1;
             start = i;
             c++;
         }
         else if(*(s->txt + i) == '\0')
         {
-            slices[c] = *(slicer(s, start,i-start));
+            *(slices[c]) = *(slicer(s, start,i-start));
             i += 1;
             start = i;
             c++; 
@@ -372,9 +374,9 @@ int main()
     printf("%s", b->txt);
    */
   string *a;
-  a->txt = "i-hate-my-life";
+  a->txt = "hello cat";
   a->len = charcount(a);
- string * b=  ((splitter(a,' ')));
- printf("%s\n", b->txt);
+ string ** b=  ((splitter(a,' ')));
+ printf("%s\n", *(*(b))->txt);
     return 0;
 }
