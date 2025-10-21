@@ -49,8 +49,7 @@ long long charcount(const string *s)
 {
     long long  i = 0;
 
-    while(s->txt[i] != '\0')
-    {
+    while(s->txt[i] != '\0'){
         i++;
     }
    
@@ -61,7 +60,6 @@ long long charcount(const string *s)
 void mystrdup(string *cp,  const string *org)
 {
     long long n = org->len;
-    //fuck gotta rm this 
     cp->txt = (char *)malloc(n + 1);    
     
     for(int i = 0; i < n + 1; i++)
@@ -70,8 +68,8 @@ void mystrdup(string *cp,  const string *org)
     }
     cp->len = n;
 }
-// comparsion
 
+// comparsion
 int my_strcmp(const string *s1, const string *s2)
 {
     // -1 means s1 is lexographically smaller than s2
@@ -79,6 +77,7 @@ int my_strcmp(const string *s1, const string *s2)
     // 0 means equal
    
     int n = min(s1->len, s2->len);
+    // Comparing letter by letter
     for(int i = 0; i < n; i++)
     {
         if (s1->txt[i] < s2->txt[i])
@@ -90,7 +89,7 @@ int my_strcmp(const string *s1, const string *s2)
             return 1;
         }
     }
-    
+    // If both are same for first n letters then we compare lengths
     if(s1->len < s2->len)
     { 
     return -1;
@@ -110,19 +109,14 @@ string con_lower(const string *s)
     string lowstr;
     int l = charcount(s);
     lowstr.txt = (char *)malloc(l + 1);
+    lowstr.len = l;
 
     for (int i = 0; i < l; i++)
     {
-
-        if (s->txt[i] >= 'A' && s->txt[i] <= 'Z')
-            lowstr.txt[i] = s->txt[i] + 32;
-
-        else
-            lowstr.txt[i] = s->txt[i];
+        lowstr.txt[i] = (s->txt[i] >= 'A' && s->txt[i] <= 'Z')? s->txt[i] + 32: s->txt[i] ; 
     }
 
     lowstr.txt[l] = '\0';  
-    lowstr.len = l;
     return lowstr;
 }
 
