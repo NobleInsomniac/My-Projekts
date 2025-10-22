@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#define min(a,b) ( ((a)<(b)) ? a : b )
+
+#define min(a,b) ( ( (a) < (b) ) ? (a) : (b))
 
 typedef struct   
 {
@@ -12,8 +13,10 @@ typedef struct
 
 // length of string
 long long charcount(const string *s);
+// length of statment
+long long strlong(char*);
 // copy  string 
-void mystrdup( string *cp,  const string *org);
+void mystrdup(string *cp,  const string *org);
 // compare two string
 int my_strcmp(const string *s1, const string *s2);
 // lower case a string
@@ -36,30 +39,31 @@ string *my_rcharsearch(const string *, const char );
 long long int occ_count(const string *, const char);
 // #TODO Tokenize the string i.e. implement .split() in c
 string** splitter(const string* , char);
-string make_string( char * t)
+
+string make_string(char* t)
 {
+    string c = {t,0};
     string a;
-    a.txt = t;
-    a.len = charcount(&a);
+    mystrdup(&a,&c);
     return a;
 }
 
 // To calculate length
-long long charcount(const string *s)
+long long int charcount(const string *s)
 {
     long long  i = 0;
 
-    while(s->txt[i] != '\0'){
+    while(*(s->txt + i) != '\0'){
         i++;
     }
-   
+    
     return i;
 }
 
 // to copy string
 void mystrdup(string *cp,  const string *org)
 {
-    long long n = org->len;
+    long long n = charcount(org);
     cp->txt = (char *)malloc(n + 1);    
     
     for(int i = 0; i < n + 1; i++)
@@ -113,7 +117,7 @@ string con_lower(const string *s)
 
     for (int i = 0; i < l; i++)
     {
-        lowstr.txt[i] = (s->txt[i] >= 'A' && s->txt[i] <= 'Z')? s->txt[i] + 32: s->txt[i] ; 
+        lowstr.txt[i] = (s->txt[i] >= 'A' && s->txt[i] <= 'Z') ? s->txt[i] + 32: s->txt[i] ; 
     }
 
     lowstr.txt[l] = '\0';  
@@ -126,31 +130,23 @@ void free_string(string *s) {
     s->len = 0;
 }
 //Works fine
-string *mystrcat(const string *pre, const string *suf)
+string *mystrcat(string *pre, const string *suf)
 {
-
-    string *res = malloc(sizeof(string));
-
     long long  n = pre->len;
     long long  m = suf->len;
 
-    res->txt = (char *)malloc(n + m + 2);
+    pre->txt = realloc(pre->txt, n+m+1);
+    if(!pre) return NULL;
 
-    for(long long  i = 0;i < n; i++)
+    for(long long i = n; i < n+m; i++)
     {
-        *(res->txt+i) = *(pre->txt + i); 
+        *(pre->txt + i)= *(suf->txt+i-n);
     }
 
-    for (long long  j = n; j < n+m; j++)
-    {
-       *(res->txt +j) = *(suf->txt+ j - n);
-    }
+    *(pre->txt + n+m) = '\0';
+    pre->len = n+m;
 
-   *(res->txt + n + m + 1) = '\0';
-    res->len = charcount(res);
-
-    return res;
- 
+    return pre;
 }
 // find a character with linear search
 bool lstrsearch(const string *s, char c)
@@ -260,6 +256,7 @@ long long int occ_count(const string *s, const char c)
     return count;
 }
 // #TODO debug
+/*
 string** splitter(const string* s, char dlr)
 {
     long long int occ = occ_count(s, dlr);
@@ -290,6 +287,7 @@ string** splitter(const string* s, char dlr)
     }
     return slices;
 }
+*/
 
 //int main (int argc, char* argv[])
 int main()
@@ -366,11 +364,13 @@ int main()
         return 1;
     }
     printf("%s", b->txt);
-   */
+   
   string *a;
   a->txt = "hello cat";
   a->len = charcount(a);
  string ** b=  ((splitter(a,' ')));
  printf("%s\n", *(*(b))->txt);
     return 0;
+    */
+   printf("%lu", sizeof(string));
 }
