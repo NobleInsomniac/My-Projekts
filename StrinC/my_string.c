@@ -44,7 +44,7 @@ string make_string(char* t)
 {
     string c = {t,0};
     string a;
-    mystrdup(&a,&c);
+    mystrdup(&a,&(string) {t,0});
     return a;
 }
 
@@ -140,10 +140,10 @@ string *mystrcat(string *pre, const string *suf)
 
     for(long long i = n; i < n+m; i++)
     {
-        *(pre->txt + i)= *(suf->txt+i-n);
+        pre->txt[i]= suf->txt[i-n];
     }
 
-    *(pre->txt + n+m) = '\0';
+    pre->txt[n+m] = '\0';
     pre->len = n+m;
 
     return pre;
@@ -154,7 +154,7 @@ bool lstrsearch(const string *s, char c)
     long long int n = s->len;
     for(int i = 0; i < n;i++)
     {
-        if (*(s->txt + i)  == c)
+        if (s->txt[i] == c)
         {
             return true;
         }
@@ -169,7 +169,7 @@ string *slicer(const string* s, int start, int l)
     long long int n = s->len;
     for(int i = 0; i < l; i++)
     {
-        *(slice->txt + i) = *(s->txt+ start + i);
+        slice->txt[i] = s->txt[start + i];
     }
     slice->len = l;
     return slice;
@@ -180,7 +180,7 @@ string *my_substrsearch(const string *needle, const string *haystack)
 {
 
     long long int n = haystack->len;
-     long long int k = needle->len;
+    long long int k = needle->len;
      if (k == 0)
      {
          return slicer((string *)haystack, 0,0);
@@ -188,11 +188,11 @@ string *my_substrsearch(const string *needle, const string *haystack)
     for (long long int i = 0; i <= n - k; i++)
     {
         long long int j;
-        if (*(haystack->txt + i)  == *(needle->txt))
+        if ( haystack->txt[i]  == needle->txt[0])
         {
             for ( j = 0; j < k;j++)
             {
-                if (*(haystack->txt + i + j)  != *(needle->txt + j))
+                if (haystack->txt[i + j]  != needle->txt[j])
                 {
                     break;
                 }
@@ -214,7 +214,7 @@ string *my_charsearch(const string *s, const char c)
     long long int n = s->len;
     for(long long int i = 0; i < n; i++)
     {
-        if(*(s->txt + i) == c)
+        if(s->txt[i] ==  c)
         {
             res->txt = s->txt + i;
             
@@ -231,7 +231,7 @@ string *my_rcharsearch(const string *s, const char c)
     long long int n = s->len;
     for(long long int i = n-2; i >= 0; i--)
     {
-        if(*(s->txt + i) == c)
+        if(s->txt[i] ==  c)
         {
             res->txt = s->txt + i;
             return res;
@@ -248,7 +248,7 @@ long long int occ_count(const string *s, const char c)
 
     for(long long int i = 0; i < n; i++)
     {
-        if(*(s->txt + i) == c)
+        if(s->txt[i] ==  c)
         {
             count++;
         }
