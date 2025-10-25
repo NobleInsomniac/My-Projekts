@@ -4,15 +4,14 @@
 
 #define min(a,b) ( ( (a) < (b) ) ? (a) : (b))
 
-typedef struct   
-{
+typedef struct{
     char * txt;
     long long len;
 
 }string;
 
 // length of string
-long long charcount(const string *s);
+long long charcount(string *s);
 // length of statment
 long long strlong(char*);
 // copy  string 
@@ -40,20 +39,17 @@ long long int occ_count(const string *, const char);
 // #TODO Tokenize the string i.e. implement .split() in c
 string** splitter(const string* , char);
 
-string make_string(char* t)
-{
-    string c = {t,0};
+string make_string(char* t){
     string a;
     mystrdup(&a,&(string) {t,0});
     return a;
 }
 
 // To calculate length
-long long int charcount(const string *s)
-{
+long long int charcount(string *s){
     long long  i = 0;
 
-    while(*(s->txt + i) != '\0'){
+    while( s->txt[i] != '\0'){
         i++;
     }
     
@@ -61,62 +57,52 @@ long long int charcount(const string *s)
 }
 
 // to copy string
-void mystrdup(string *cp,  const string *org)
-{
-    long long n = charcount(org);
+void mystrdup(string *cp,  const string *org){
+    long long n = charcount((string *)org);
     cp->txt = (char *)malloc(n + 1);    
-    
-    for(int i = 0; i < n + 1; i++)
-    {
+    cp->len = n;
+
+    for(int i = 0; i < n + 1; i++){
         cp->txt[i] = org->txt[i];
     }
-    cp->len = n;
 }
 
 // comparsion
-int my_strcmp(const string *s1, const string *s2)
-{
+int my_strcmp(const string *s1, const string *s2){
     // -1 means s1 is lexographically smaller than s2
     // 1 means s1 is lexographically larger than s2
     // 0 means equal
    
-    int n = min(s1->len, s2->len);
+    long long int n = min(s1->len, s2->len);
     // Comparing letter by letter
-    for(int i = 0; i < n; i++)
-    {
-        if (s1->txt[i] < s2->txt[i])
-        {
+    for(int i = 0; i < n; i++){
+        if (s1->txt[i] < s2->txt[i]){
             return -1;
         }
-        else if(s1->txt[i] > s2->txt[i])
-        {
+        else if(s1->txt[i] > s2->txt[i]){
             return 1;
         }
     }
     // If both are same for first n letters then we compare lengths
-    if(s1->len < s2->len)
-    { 
+    if(s1->len < s2->len){ 
     return -1;
     } 
 
-    else if (s1->len > s2->len)
-    {
-        return 1;
+    else if (s1->len > s2->len){
+    return 1;
     }
 
     return 0;
 }
 
 // lower case a string
-string con_lower(const string *s)
-{
+string con_lower(const string *s){
     string lowstr;
-    int l = charcount(s);
+    long long int l = charcount((string *)s);
     lowstr.txt = (char *)malloc(l + 1);
     lowstr.len = l;
 
-    for (int i = 0; i < l; i++)
-    {
+    for (int i = 0; i < l; i++){
         lowstr.txt[i] = (s->txt[i] >= 'A' && s->txt[i] <= 'Z') ? s->txt[i] + 32: s->txt[i] ; 
     }
 
@@ -130,16 +116,14 @@ void free_string(string *s) {
     s->len = 0;
 }
 //Works fine
-string *mystrcat(string *pre, const string *suf)
-{
+string *mystrcat(string *pre, const string *suf){
     long long  n = pre->len;
     long long  m = suf->len;
 
     pre->txt = realloc(pre->txt, n+m+1);
     if(!pre) return NULL;
 
-    for(long long i = n; i < n+m; i++)
-    {
+    for(long long i = n; i < n+m; i++){
         pre->txt[i]= suf->txt[i-n];
     }
 
@@ -149,26 +133,21 @@ string *mystrcat(string *pre, const string *suf)
     return pre;
 }
 // find a character with linear search
-bool lstrsearch(const string *s, char c)
-{
+bool lstrsearch(const string *s, char c){
     long long int n = s->len;
-    for(int i = 0; i < n;i++)
-    {
-        if (s->txt[i] == c)
-        {
+    for(int i = 0; i < n;i++){
+        if (s->txt[i] == c){
             return true;
         }
     }
     return false;
 }
 // Return a slice of the given string starting from start of length  l
-string *slicer(const string* s, int start, int l)
-{
+string *slicer(const string* s, int start, int l){
     string *slice = malloc(sizeof(string));
     slice->txt = (char*)malloc(l+1);
     long long int n = s->len;
-    for(int i = 0; i < l; i++)
-    {
+    for(int i = 0; i < l; i++){
         slice->txt[i] = s->txt[start + i];
     }
     slice->len = l;
@@ -176,31 +155,25 @@ string *slicer(const string* s, int start, int l)
 
 }
 //Return a pointer to the place where the substring occurs in a string
-string *my_substrsearch(const string *needle, const string *haystack)
-{
+string *my_substrsearch(const string *needle, const string *haystack){
 
     long long int n = haystack->len;
     long long int k = needle->len;
-     if (k == 0)
-     {
+     if (k == 0){
          return slicer((string *)haystack, 0,0);
      }
-    for (long long int i = 0; i <= n - k; i++)
-    {
-        long long int j;
-        if ( haystack->txt[i]  == needle->txt[0])
-        {
-            for ( j = 0; j < k;j++)
-            {
-                if (haystack->txt[i + j]  != needle->txt[j])
-                {
+    for (long long int i = 0; i <= n - k; i++){
+        
+        if (haystack->txt[i]  == needle->txt[0]){
+            long long int j;
+            for ( j = 0; j < k;j++){
+                if (haystack->txt[i + j]  != needle->txt[j]){
                     break;
                 }
 
                 
             }
-            if (j == k)
-                {
+            if (j == k){
                     return slicer((string *)haystack, i, needle->len);
                 }
         }
@@ -208,15 +181,13 @@ string *my_substrsearch(const string *needle, const string *haystack)
     return NULL;
 }
 //return the first occurence of the character c in the string s
-string *my_charsearch(const string *s, const char c)
-{
+string *my_charsearch(const string *s, const char c){
     string* res;
     long long int n = s->len;
-    for(long long int i = 0; i < n; i++)
-    {
-        if(s->txt[i] ==  c)
-        {
-            res->txt = s->txt + i;
+
+    for(long long int i = 0; i < n; i++){
+        if(s->txt[i] ==  c){
+            res->txt = &(s->txt[i]);
             
             return res;
         }
@@ -225,15 +196,14 @@ string *my_charsearch(const string *s, const char c)
 return NULL;
 }
 //return the lsat occurence of the character c in the string s
-string *my_rcharsearch(const string *s, const char c)
-{
+string *my_rcharsearch(const string *s, const char c){
     string* res;
     long long int n = s->len;
-    for(long long int i = n-2; i >= 0; i--)
-    {
-        if(s->txt[i] ==  c)
-        {
-            res->txt = s->txt + i;
+
+    for(long long int i = n-2; i >= 0; i--){
+        if(s->txt[i] ==  c){
+            // s->txt[i] cant be used here as it defrences the pointer which we dont want here
+            res->txt = &(s->txt[i]);
             return res;
         }
     }
@@ -241,57 +211,23 @@ string *my_rcharsearch(const string *s, const char c)
 return NULL;
 }
 // gives no of occurencexs of a char
-long long int occ_count(const string *s, const char c)
-{
+long long int occ_count(const string *s, const char c){
     long long int n = s->len;
     long long int count = 0;
 
-    for(long long int i = 0; i < n; i++)
-    {
-        if(s->txt[i] ==  c)
-        {
+    for(long long int i = 0; i < n; i++){
+        if(s->txt[i] ==  c){
             count++;
         }
     }
     return count;
 }
-// #TODO debug
-/*
-string** splitter(const string* s, char dlr)
-{
-    long long int occ = occ_count(s, dlr);
-    
-    long long int n = s->len;
+// #TODO splitter
 
-    string* slices[] = (string *)malloc(occ+1);
 
-    long long int start = 0, c = 0;
-    for(long long int i = 0; i < n+1;i++)
-    {
-        if (*(s->txt + i) == dlr)
-        {
-            
-            *(slices[c]) = *(slicer(s, start,i-start));
-            i += 1;
-            start = i;
-            c++;
-        }
-        else if(*(s->txt + i) == '\0')
-        {
-            *(slices[c]) = *(slicer(s, start,i-start));
-            i += 1;
-            start = i;
-            c++; 
-        }
-
-    }
-    return slices;
-}
-*/
 
 //int main (int argc, char* argv[])
-int main()
-{
+int main(){
     /*if (argc < 2)
     {
         return 1;
