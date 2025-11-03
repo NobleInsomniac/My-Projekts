@@ -21,7 +21,7 @@ int my_strcmp(const string *s1, const string *s2);
 // lower case a string
 string con_lower(const string *s);
 // free dynamically allocated memory
-void free_string(string *s);
+void free_str(string *s);
 // comncatinate two strings
 string my_strcat(const string *, const string *);
 // search for a charcter in string by linear search
@@ -110,7 +110,7 @@ string con_lower(const string *s){
     return lowstr;
 }
 
-void free_string(string *s) {
+void free_str(string *s) {
     free(s->txt);
     s->txt = NULL;
     s->len = 0;
@@ -223,8 +223,37 @@ long long int occ_count(const string *s, const char c){
     return count;
 }
 // #TODO splitter
+string** splitter(const string *s, char dlr)
+{
+    long long int occ = occ_count(s,dlr);
+    long long int n = s->len +1;
+    long long int frnt = 0, crrnt = 0;
 
+    string** arr = malloc((occ + 1)*sizeof(string*));
 
+    for(long long int i = 0; i <n; i++)
+    { 
+        if(s->txt[i] == dlr || (s->txt[i] == '\0' && frnt != i))
+        {
+            
+          
+            if(i == frnt)
+            {
+                frnt++;
+                continue;
+            }
+            arr[crrnt] = slicer(s, frnt, i-frnt);
+            frnt = i+1;
+
+            if(*((arr[crrnt])->txt) == dlr)
+                continue;
+
+            crrnt++;
+        }
+    }
+    return arr;
+    
+}
 
 //int main (int argc, char* argv[])
 int main(){
@@ -300,13 +329,15 @@ int main(){
         return 1;
     }
     printf("%s", b->txt);
-   
+   */
+  int n;
+  scanf("%d", &n);
   string *a;
-  a->txt = "hello cat";
+  a->txt = "I am mad";
   a->len = charcount(a);
  string ** b=  ((splitter(a,' ')));
- printf("%s\n", *(*(b))->txt);
+ printf("%s", b[n]->txt);
     return 0;
-    */
-   printf("%lu", sizeof(string));
+    
+
 }
