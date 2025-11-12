@@ -47,13 +47,13 @@ string make_string(char* t){
 
 // To calculate length
 long long int charcount(string *s){
-    long long  i = 0;
+    long long  count = 0;
 
-    while( s->txt[i] != '\0'){
-        i++;
+    while( s->txt[count] != '\0'){
+        count++;
     }
     
-    return i;
+    return count;
 }
 
 // to copy string
@@ -99,6 +99,7 @@ int my_strcmp(const string *s1, const string *s2){
 string con_lower(const string *s){
     string lowstr;
     long long int l = charcount((string *)s);
+    
     lowstr.txt = (char *)malloc(l + 1);
     lowstr.len = l;
 
@@ -117,8 +118,7 @@ void free_str(string *s) {
 }
 //Works fine
 string *mystrcat(string *pre, const string *suf){
-    long long  n = pre->len;
-    long long  m = suf->len;
+    long long  n = pre->len, m = suf->len;
 
     pre->txt = realloc(pre->txt, n+m+1);
     if(!pre) return NULL;
@@ -157,8 +157,7 @@ string *slicer(const string* s, int start, int l){
 //Return a pointer to the place where the substring occurs in a string
 string *my_substrsearch(const string *needle, const string *haystack){
 
-    long long int n = haystack->len;
-    long long int k = needle->len;
+    long long int n = haystack->len, k = needle->len;
      if (k == 0){
          return slicer((string *)haystack, 0,0);
      }
@@ -212,8 +211,7 @@ return NULL;
 }
 // gives no of occurencexs of a char
 long long int occ_count(const string *s, const char c){
-    long long int n = s->len;
-    long long int count = 0;
+    long long int n = s->len, count = 0;
 
     for(long long int i = 0; i < n; i++){
         if(s->txt[i] ==  c){
@@ -222,21 +220,18 @@ long long int occ_count(const string *s, const char c){
     }
     return count;
 }
-// #TODO splitter
+//  splitter
 string** splitter(const string *s, char dlr)
 {
     long long int occ = occ_count(s,dlr);
-    long long int n = s->len +1;
-    long long int frnt = 0, crrnt = 0;
+    long long int n = s->len +1, frnt = 0, crrnt = 0;
 
     string** arr = malloc((occ + 1)*sizeof(string*));
 
-    for(long long int i = 0; i <n; i++)
+    for(long long int i = 0; i < n; i++)
     { 
         if(s->txt[i] == dlr || (s->txt[i] == '\0' && frnt != i))
         {
-            
-          
             if(i == frnt)
             {
                 frnt++;
@@ -252,7 +247,6 @@ string** splitter(const string *s, char dlr)
         }
     }
     return arr;
-    
 }
 
 //int main (int argc, char* argv[])
@@ -285,7 +279,7 @@ int main(){
     bool res = my_strcmp(&a, &b);
     printf("%d\n", res);
 
-    // Uncomment to convert string a to lowercase and print result
+    //convert string a to lowercase and print result
     //char * gh = con_lower(&a);
     //printf("%s\n", gh);
 
