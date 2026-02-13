@@ -36,7 +36,7 @@ string *my_charsearch(const string *, const char );
 string *my_rcharsearch(const string *, const char );
 // gives no of occurencexs of a char
 long long int occ_count(const string *, const char);
-// #TODO Tokenize the string i.e. implement .split() in c
+// string Tokenizer i.e. implement .split() in c
 string** splitter(const string* , char);
 
 string make_string(char* t){
